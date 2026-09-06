@@ -1,0 +1,28 @@
+services:
+  - type: web
+    name: razoragent-backend
+    env: docker
+    dockerContext: ./backend
+    dockerfilePath: ./backend/Dockerfile
+    region: singapore # or oregon, frankfurt, etc.
+    plan: free
+    healthCheckPath: /api/products
+    envVars:
+      - key: PORT
+        value: 8080
+      - key: SPRING_DATASOURCE_DRIVER
+        value: org.postgresql.Driver
+      - key: SPRING_JPA_DATABASE_PLATFORM
+        value: org.hibernate.dialect.PostgreSQLDialect
+      - key: SPRING_JPA_DDL_AUTO
+        value: update
+      - key: SPRING_DATASOURCE_URL
+        sync: false # Set in Render Dashboard: jdbc:postgresql://ep-xxx.neon.tech/neondb?sslmode=require
+      - key: SPRING_DATASOURCE_USERNAME
+        sync: false # Set in Render Dashboard: neondb_owner
+      - key: SPRING_DATASOURCE_PASSWORD
+        sync: false # Set in Render Dashboard: password
+      - key: RAZORPAY_KEY_ID
+        sync: false # Set in Render Dashboard: rzp_test_...
+      - key: RAZORPAY_KEY_SECRET
+        sync: false # Set in Render Dashboard: secret

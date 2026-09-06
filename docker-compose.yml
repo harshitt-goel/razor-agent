@@ -1,0 +1,47 @@
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: razoragent-postgres
+    environment:
+      POSTGRES_DB: razoragentdb
+      POSTGRES_USER: razoradmin
+      POSTGRES_PASSWORD: razorpassword
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U razoradmin -d razoragentdb"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: razoragent-backend
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/razoragentdb
+      - SPRING_DATASOURCE_USERNAME=razoradmin
+      - SPRING_DATASOURCE_PASSWORD=razorpassword
+      - RAZORPAY_KEY_ID=${RAZORPAY_KEY_ID:-rzp_test_mockkey12345}
+      - RAZORPAY_KEY_SECRET=${RAZORPAY_KEY_SECRET:-mocksecret67890}
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: razoragent-frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:
