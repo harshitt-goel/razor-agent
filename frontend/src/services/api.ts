@@ -1,7 +1,8 @@
 import { AgentResponse, AnalyticsMetric, AuditLog, BuyerSimulatorResult, Product } from '../types';
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL 
-  ? `${import.meta.env.VITE_API_BASE_URL.replace(/\/$/, '')}/api` 
+const metaEnv = (import.meta as unknown as { env?: { VITE_API_BASE_URL?: string } }).env;
+const API_BASE = metaEnv && metaEnv.VITE_API_BASE_URL 
+  ? `${metaEnv.VITE_API_BASE_URL.replace(/\/$/, '')}/api` 
   : '/api';
 
 export const api = {
@@ -75,7 +76,6 @@ export const api = {
   }
 };
 
-// Client Fallbacks for Seamless standalone demo execution
 function mockAgentResponse(sessionId: string, message: string, simulateFailure: boolean): AgentResponse {
   const isRemoveCase = message.toLowerCase().includes('remove case') || message.toLowerCase().includes('remove carrying case');
   
