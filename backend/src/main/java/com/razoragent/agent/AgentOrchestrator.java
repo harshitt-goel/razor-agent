@@ -109,8 +109,8 @@ public class AgentOrchestrator {
         List<String> toolsCalled = new ArrayList<>();
         String lowerPrompt = userPrompt != null ? userPrompt.toLowerCase() : "";
 
-        // 1. Conversational Cart Modification ("remove case", "remove carrying case", "cancel")
-        if (lowerPrompt.contains("remove case") || lowerPrompt.contains("remove carrying case") || lowerPrompt.contains("remove the case")) {
+        // 1. Conversational Cart Modification ("remove case", "remove carrying case", "remove the carrying case", "remove upsell")
+        if (lowerPrompt.contains("remove") && (lowerPrompt.contains("case") || lowerPrompt.contains("carrying") || lowerPrompt.contains("upsell"))) {
             toolsCalled.add("removeFromCart");
             toolsCalled.add("calculateCart");
             

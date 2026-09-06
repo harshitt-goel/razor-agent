@@ -72,7 +72,7 @@ export const App: React.FC = () => {
   };
 
   const handleConversationalRemoveCase = async () => {
-    handleSendMessage('Remove the carrying case from my cart');
+    handleSendMessage('Remove the carrying case');
   };
 
   const handleRunSimulator = async () => {

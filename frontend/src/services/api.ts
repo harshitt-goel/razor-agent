@@ -77,7 +77,8 @@ export const api = {
 };
 
 function mockAgentResponse(sessionId: string, message: string, simulateFailure: boolean): AgentResponse {
-  const isRemoveCase = message.toLowerCase().includes('remove case') || message.toLowerCase().includes('remove carrying case');
+  const lowerMsg = message.toLowerCase();
+  const isRemoveCase = lowerMsg.includes('remove') && (lowerMsg.includes('case') || lowerMsg.includes('carrying') || lowerMsg.includes('upsell'));
   
   if (isRemoveCase) {
     return {
